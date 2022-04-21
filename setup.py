@@ -16,6 +16,8 @@ setup(
     # Packages
     packages=["tfjsa"],
 
+    package_dir={'templates': 'tfjsa/templates', 'static': 'tfjsa/static'},
+
     # Include additional files into the package
     include_package_data=True,
     

@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: tfjsa
+Version: 0.0.1
+Summary: tfjs(Tensorflow js)-based Flask web apps.
+Home-page: http://pypi.python.org/pypi/tfjsa/
+Author: Zhang
+Author-email: oo@zju.edu.cn
+License: LICENSE
+Description: UNKNOWN
+Platform: UNKNOWN

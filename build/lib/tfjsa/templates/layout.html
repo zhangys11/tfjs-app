@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="description" content="DL">
+    <title>TFJS AI</title>
+
+    <link href="static/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="static/font-awesome.css" rel="stylesheet" type="text/css" media="all">
+
+    <script src="static/jquery-3.3.1.min.js"></script>
+    <script src="static/popper.min.js"></script>
+    <script src="static/bootstrap.js"></script>
+    <script src="static/jquery.blockUI.js"></script>
+
+    <script src="static/tf.min.js"></script>
+
+    <style>
+        html, body {
+            font-family: sans-serif, SimHei;
+            color: #222;
+        }
+
+        .navbar {
+            background: linear-gradient(to bottom, #eee, #fff);
+        }
+
+        #navbar_main .nav-item {
+            padding-right: 1.1em;
+            font-weight: bold;
+        }
+
+        .text-shadow {
+            text-shadow: 1px 1px 3px #cce;
+        }
+
+
+        .round-icons a {
+            display: inline-block;
+            height: 3.0rem;
+            width: 3.0rem;
+            background-color: #495057;
+            color: #fff !important;
+            border-radius: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 3.0rem;
+            margin-right: 1rem;
+            padding-top: 0.7rem;
+        }
+
+        .round-icons a.nav-link {
+            font-family: KaiTi;
+            line-height: 2.0rem;
+            font-size: 2.0rem;
+        }
+
+        .round-icons a:last-child {
+            margin-right: 0;
+        }
+
+        .round-icons a:hover {
+            background-color: #BD5D38;
+        }
+
+        footer {
+            background-color: transparent;
+            color: #939393;
+            padding: 2em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
+        <div class="container-fluid">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_main">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse text-center" id="navbar_main">
+                <ul class="navbar-nav ml-2">
+                    <li class="round-icons">
+                        <a href="/ImageClassification" title="General Image Classification">
+                            <i class="fa fa-camera-retro"></i>
+                        </a>
+                        <a href="/ObjectDetection" title="Object Detection">
+                            <i class="fa fa-object-group"></i>
+                        </a>
+                        <a href="/ImageSegmentation" title="Image Segmentation">
+                            <i class="fa fa-photo"></i>
+                        </a>
+                        <a href="/StyleTransfer" title="Style Transfer">
+                            <i class="fa fa-paint-brush"></i>
+                        </a>
+                        <a href="/FundusImageQualifier" title="Wide-angle Retinal Image Qualifier">
+                            <i class="fa fa-eyedropper"></i>
+                        </a>
+                        <a href="/Leaf" title="Plant Disease Classifier">
+                            <i class="fa fa-leaf"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br />
+
+    <div class="container-fluid px-5">
+            {% block body %}
+            {% endblock %}
+    </div>
+</body>
+<footer>
+    &copy; Assembled by Dr. Zhang (oo@zju.edu.cn)
+</footer>
+
+</html>
