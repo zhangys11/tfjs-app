@@ -53,6 +53,6 @@ def open_browser():
       
 if __name__ =='__main__':
     # use netstat -ano|findstr 5007 to check port use
-    # Timer(3, open_browser).start()
-    app.run(host="0.0.0.0", port=5007, debug = True)
+    Timer(2, open_browser).start()
+    app.run(host="0.0.0.0", port=5007, debug = False)
     

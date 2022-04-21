@@ -33,7 +33,7 @@ We provide 5 apps:
 
 > Go to http://localhost:5007
 
-# Guide on re-development. 二次开发说明
+# Guide on re-development or extended development
 
 If you want to re-develop on this repo or deploy to other framework. You might want to revise the following points. 
 
