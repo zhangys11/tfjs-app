@@ -27,7 +27,11 @@ We provide 5 apps:
 
 # Install & Run
 
+> pip install tfjsa
 
+> python -m tfjsa.run
+
+> Go to http://localhost:5007
 
 # Guide on re-development. 二次开发说明
 
