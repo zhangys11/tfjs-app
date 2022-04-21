@@ -471,7 +471,7 @@ var Main = function () {
         var randomNumber = Math.floor(Math.random() * _links2.default.length);
         element.src = _links2.default[randomNumber];
       } else {
-        element.src = 'images/' + selectedValue + '.jpg';
+        element.src = 'static/styletransfer/images/' + selectedValue + '.jpg';
       }
     }
   }, {

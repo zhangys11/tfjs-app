@@ -51,6 +51,7 @@ If you want to re-develop on this repo or deploy to other framework. You might w
    For Style Transfer app,
 
       Modify the bundle.js. Change "saved_model_xxx" to "static/styletransfer/saved_model_xxx"
+      `element.src = 'static/styletransfer/images/' + selectedValue + '.jpg';`
 
   For Fundus Image Qualifier app,
 

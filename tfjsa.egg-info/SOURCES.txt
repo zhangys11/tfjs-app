@@ -130,8 +130,6 @@ tfjsa/static/styletransfer/images/stripes.jpg
 tfjsa/static/styletransfer/images/towers.jpg
 tfjsa/static/styletransfer/images/udnie.jpg
 tfjsa/static/styletransfer/images/zigzag.jpg
-tfjsa/static/styletransfer/readme_img/combine.jpg
-tfjsa/static/styletransfer/readme_img/stylize.jpg
 tfjsa/static/styletransfer/saved_model_style_inception_js/group1-shard1of9.bin
 tfjsa/static/styletransfer/saved_model_style_inception_js/group1-shard2of9.bin
 tfjsa/static/styletransfer/saved_model_style_inception_js/group1-shard3of9.bin
