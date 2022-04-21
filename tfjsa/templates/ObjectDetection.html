@@ -1,0 +1,257 @@
+﻿{% extends "layout.html" %}
+
+{% block body %}
+{{ super() }}
+
+
+<!-- Specify the url of model.json in this js file -->
+<script src="static/SSD/coco-ssd.js" type="text/javascript"></script>
+
+<!-- Place your code in the script tag below. You can also use an external .js file -->
+<script>
+    function log(s) {
+        var timestamp = new Date().toLocaleString()
+        document.getElementById('log').innerHTML = timestamp + " - " + s + '<br/>'
+            + document.getElementById('log').innerHTML;
+    }
+
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+
+    function od(img) {
+        $.blockUI({ message: '<h4>' + 'Loading Model...' + '</h4>', fadeIn: 0 });
+
+        // Load the model.
+        cocoSsd.load().then(model => {
+            const startTime = performance.now();
+
+            // detect objects in the image.
+            model.detect(img).then(predictions => {
+                const totalTime = performance.now() - startTime;
+
+                var s = '';
+                for (let i = 0; i < predictions.length; i++) {
+                    s += predictions[i]['class'] + ' (' +
+                        predictions[i]['score'].toFixed(3) + '). ';
+                }
+
+                log(`<i class="fa fa-bolt"></i> Prediction done in ${Math.floor(totalTime)} ms. `
+                    + s);
+                    
+                // log(JSON.stringify (predictions) );
+
+                // Show the classes in the DOM.
+                let canvas_id = showResults(img);
+                let canvas = document.getElementById(canvas_id);
+
+                let img1 = new Image();
+                img1.onload = function () {
+                    canvas.width = img.naturalWidth; // img1.width;
+                    canvas.height = img.naturalHeight; // img1.height;
+
+                    let ctx = canvas.getContext('2d');
+                    ctx.drawImage(img1, 0, 0);
+                    //continue canvas procesing after image has been loaded
+
+                    let fontsize = Math.max(2, Math.round(canvas.width / 18));
+
+                    for (let i = 0; i < predictions.length; i++) {
+                        drawBoundingBoxes(ctx,
+                            predictions[i]['bbox'],
+                            predictions[i]['class'] + ' (' +
+                            predictions[i]['score'].toFixed(3) + ')',
+                            fontsize
+                        );
+                    }
+                };
+                img1.src = img.src;
+                img1.title = s;
+
+                $.unblockUI();
+            });
+        });
+    }
+
+    function showResults(imgElement) {
+        imgElement.style = "width: 100%; height: auto";
+        //imgElement.width = '100%';
+        //imgElement.height = 'auto';
+        const predictionContainer = document.createElement('div');
+        predictionContainer.className = 'pred-container row';
+
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'col-md-6';
+        imgContainer.appendChild(imgElement);
+        predictionContainer.appendChild(imgContainer);
+
+        const canvasContainer = document.createElement('canvas');
+        canvasContainer.className = 'col-md-6';
+        canvasContainer.id = s4();
+        predictionContainer.appendChild(canvasContainer);
+
+        predictionsElement.insertBefore(
+            predictionContainer, predictionsElement.firstChild);
+        predictionsElement.insertBefore(
+            document.createElement('hr'), predictionsElement.firstChild);
+
+        return canvasContainer.id;
+    }
+
+    const PREDICT_BOUNDING_BOX_LINE_WIDTH = 0.1;
+    const PREDICT_BOUNDING_BOX_STYLE = 'rgb(255, 0, 0)';
+
+    function drawBoundingBoxes(ctx, predictBoundingBox, label, fontsize) {
+
+        tf.util.assert(
+            predictBoundingBox != null && predictBoundingBox.length === 4,
+            `Expected boundingBoxArray to have length 4, ` +
+            `but got ${predictBoundingBox} instead`);
+
+        let left = predictBoundingBox[0];
+        let top = predictBoundingBox[1];
+        let right = predictBoundingBox[2] + left;
+        let bottom = predictBoundingBox[3] + top;
+
+        // let ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.strokeStyle = PREDICT_BOUNDING_BOX_STYLE;
+        ctx.lineWidth = Math.round(PREDICT_BOUNDING_BOX_LINE_WIDTH * fontsize) + 1;
+        ctx.moveTo(left, top);
+        ctx.lineTo(right, top);
+        ctx.lineTo(right, bottom);
+        ctx.lineTo(left, bottom);
+        ctx.lineTo(left, top);
+        ctx.stroke();
+
+        ctx.font = fontsize + 'px Arial';
+        ctx.fillStyle = PREDICT_BOUNDING_BOX_STYLE;
+        ctx.fillText(label, left + 5, bottom - 5);
+    }
+
+
+    $(document).ready(function () {
+
+        $('#imageFile').change(function () {
+            $('#imageFileCover').val($(this).val());
+        });
+
+        predictionsElement = document.getElementById('predictions');
+
+        log('<i class="fa fa-globe"></i> ' + navigator.userAgent);
+
+        const filesElement = document.getElementById('imageFiles');
+        filesElement.addEventListener('change', evt => {
+            let files = evt.target.files;
+            // Display thumbnails & issue call to predict each image.
+            for (let i = 0, f; f = files[i]; i++) {
+                // Only process image files (skip non image files)
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+                let reader = new FileReader();
+                reader.onload = e => {
+                    // Fill the image & call predict.
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    //img.width = IMAGE_SIZE;
+                    //img.height = IMAGE_SIZE;
+                    img.onload = () => od(img);
+                };
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+        });
+
+        var img = document.createElement('img');
+        img.src = "static/Mobilenet/cat.jpg";
+        img.onload = () => {
+            od(img);
+            log("<i class='fa fa-cube'></i> Model loaded. " + '<span class="badge badge-pill badge-secondary">MobilenetV2-SSD Pretrained on COCO</span>');
+        };
+    })
+</script>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="tab0">
+
+                <div id="file-container">
+                    <h5>Title</h5>
+                    <br />
+                    <input type="file" id="imageFiles" name="imageFiles[]" multiple
+                           style="display:none;" />
+                    <input type="text" id="imageFileCover" onclick="$('#imageFiles').click();"
+                           class="input-large"
+                           style="width: 100%; height: 30px; min-width: 100px;">
+                    <a class="btn" onclick="$('#imageFiles').click();">
+                        Choose Files
+                    </a>
+                    <br /><hr />
+                </div>
+
+                <div class="font-italic small">
+                    This is an object detection demo based on tensorflowjs.
+                    The backend model is an SSD (Single Shot MultiBox Detection) pretrained on COCO.
+                    80 classes are supported.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div>
+            <div id="predictions" class="container"></div>
+        </div>
+
+        <hr />
+        <div class="alert alert-light">
+            <h5>Log</h5>
+            <div id="log"></div>
+        </div>
+
+        <hr />
+        <div class="alert alert-light">
+            <!-- Panel  1 -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseTwo">
+                            Supported labels
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="panel-collapse">
+                    <div class="panel-body">
+                        <p>person, bicycle, car, motorcycle, airplane, bus, train, truck, traffic light, fire hydrant, stop sign, parking meter, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard, sports ball, kite, baseball glove, skateboard, surfboard, tennis racket, bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, sandwhich, orange, broccoli, carrot, pizza, donut, cake, chair, couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote,, keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, clock, vase, scissor, teddy bear, hair drier, toothbrush</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Panel  3 -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseThree">
+                            Reference
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="panel-collapse">
+                    <div class="panel-body">
+                        <a target="_blank" href="https://www.npmjs.com/package/@Html.Raw("@")tensorflow-models/coco-ssd">
+                            <i class="fa fa-book">
+                                Object Detection (coco-ssd)
+                            </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
