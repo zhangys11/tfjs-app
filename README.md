@@ -1,6 +1,7 @@
 # About
 
-This repo can be a good starting point for building your own tfjs (tensorflow-js)-based web applicaitons.
+This repo can be a good starting point for building your own tfjs (tensorflow-js)-based web applicaitons.  
+The original project is developed for ASP.Net MVC (http://zhangys.org.cn/DeepLearning). Now I rewrite it as a Flask web app.
 
 We provide 5 apps: 
 
