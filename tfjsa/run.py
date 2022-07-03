@@ -52,7 +52,15 @@ def open_browser():
     webbrowser.open_new('http://localhost:5007/')
       
 if __name__ =='__main__':
-    # use netstat -ano|findstr 5007 to check port use
-    Timer(2, open_browser).start()
+    '''
+    Pass 'silent' will not open the browser 
+    '''
+
+    print(sys.argv)
+
+    if len(sys.argv) < 2 or not sys.argv[1] == 'silent':
+        # use netstat -ano|findstr 5007 to check port use
+        Timer(2, open_browser).start()
+
     app.run(host="0.0.0.0", port=5007, debug = False)
     

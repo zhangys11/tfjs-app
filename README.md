@@ -25,13 +25,23 @@ We provide 5 apps:
 
 <img src="leaf.png">
 
-# Install & Run
+# Install
 
-> pip install tfjsa
+  > pip install tfjsa
 
-> python -m tfjsa.run
+# Run and open in web browser
 
-> Go to http://localhost:5007
+  > python -m tfjsa.run  
+  or  
+  > python -m tfjsa.run silent
+
+  > Go to http://localhost:5007
+
+  When 'silent' is passed, tfjsa will not open browser automatically
+
+# Run as a desktop application
+
+  > python -m tfjsa.gui
 
 # Guide on re-development or extended development
 

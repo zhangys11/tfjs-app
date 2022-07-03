@@ -7,7 +7,7 @@ setup(
     name="tfjsa",
     
     # Version number (initial):
-    version="0.0.2",
+    version="0.0.4",
     
     # Application author details:
     author="Zhang",
@@ -34,7 +34,7 @@ setup(
     
     # Dependent packages (distributions)
     install_requires=[
-        "flask",
+        "flask", # "tkwebview2", "tkinter"
     ],
 )
 
